@@ -3,27 +3,35 @@ import VoiceInput from "./components/VoiceInput";
 import ResponseDisplay from "./components/ResponseDisplay";
 
 function App() {
-  const [response, setResponse] = useState("");
+  const [data, setData] = useState(null); // holds full response object
 
   const handleQuery = async (query) => {
-    const res = await fetch("http://localhost:5000/api/query", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query }),
-    });
+    try {
+      const res = await fetch("http://localhost:5000/api/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
 
-    const data = await res.json();
-    setResponse(data.response);
+      const responseData = await res.json();
+      setData(responseData);
 
-    const speak = new SpeechSynthesisUtterance(data.response);
-    speechSynthesis.speak(speak);
+      // Speak only the response text
+      if (responseData.response) {
+        const speak = new SpeechSynthesisUtterance(responseData.response);
+        speechSynthesis.speak(speak);
+      }
+    } catch (err) {
+      console.error("❌ Error fetching:", err.message);
+      setData({ response: "Something went wrong!" });
+    }
   };
 
   return (
     <div style={{ padding: "2rem", fontFamily: "Arial" }}>
       <h1>🛒 Voice Assistant</h1>
       <VoiceInput onQuery={handleQuery} />
-      <ResponseDisplay response={response} />
+      <ResponseDisplay data={data} />
     </div>
   );
 }
