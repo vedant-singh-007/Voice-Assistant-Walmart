@@ -3,7 +3,7 @@ import VoiceInput from "./components/VoiceInput";
 import ResponseDisplay from "./components/ResponseDisplay";
 
 function App() {
-  const [data, setData] = useState(null); // holds full response object
+  const [response, setResponse] = useState(null); // holds just the response text
 
   const handleQuery = async (query) => {
     try {
@@ -14,24 +14,28 @@ function App() {
       });
 
       const responseData = await res.json();
-      setData(responseData);
+      const reply = responseData.response;
 
-      // Speak only the response text
-      if (responseData.response) {
-        const speak = new SpeechSynthesisUtterance(responseData.response);
+      setResponse(reply); // Set response for display
+
+      if (reply) {
+        const speak = new SpeechSynthesisUtterance(reply);
         speechSynthesis.speak(speak);
       }
     } catch (err) {
       console.error("❌ Error fetching:", err.message);
-      setData({ response: "Something went wrong!" });
+      const fallback = "Something went wrong!";
+      setResponse(fallback);
+      speechSynthesis.speak(new SpeechSynthesisUtterance(fallback));
     }
   };
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "Arial" }}>
-      <h1>🛒 Voice Assistant</h1>
+    <div className="w-screen h-screen flex flex-col bg-white">
       <VoiceInput onQuery={handleQuery} />
-      <ResponseDisplay data={data} />
+      <div className="flex-grow flex items-center justify-center">
+        <ResponseDisplay response={response} />
+      </div>
     </div>
   );
 }

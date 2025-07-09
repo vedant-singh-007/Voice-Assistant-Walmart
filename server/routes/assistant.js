@@ -4,10 +4,6 @@ const axios = require("axios");
 const router = express.Router();
 require("dotenv").config();
 
-
-
-
-
 const Product = require("../models/Product"); // MongoDB model
 
 router.post("/query", async (req, res) => {
@@ -30,7 +26,7 @@ router.post("/query", async (req, res) => {
         messages: [
           {
             role: "system",
-            content: `You are a helpful shopping assistant. Here is the full list of available products with their titles, prices, and aisles:\n\n${inventoryList}\n\nRespond helpfully to the user's shopping queries based on this list.`
+            content: `You are a helpful shopping assistant. Consider yourself as a Walmart store all-in-one guide. Respond helpfully to the user's shopping queries based on this list. You can add some marketing strategy to persuade the user to buy the products. Respond quickly in words and keep it short under 20 seconds`
           },
           {
             role: "user",
@@ -59,3 +55,6 @@ router.post("/query", async (req, res) => {
 });
 
 module.exports = router;
+
+
+//Here is the full list of available products with their titles, prices, and aisles:\n\n${inventoryList}\n\n
