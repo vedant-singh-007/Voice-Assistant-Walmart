@@ -24,16 +24,25 @@ function VoiceInput({ onQuery }) {
   return (
     <div className="flex flex-col w-full h-full bg-white">
       {/* Header */}
-      <header className="bg-[#0071dc] px-4 py-2 shadow-md w-full">
-  <div className="max-w-2xl mx-auto flex items-center">
+ <header className="bg-[#0071dc] py-4 px-4 shadow-md w-full relative flex justify-center items-center">
+  {/* Walmart logo on the left */}
+  <div className="absolute left-4 flex items-center">
     <img
       src={logo}
       alt="Walmart Logo"
-      className="h-10 mr-3" // Keep logo size fixed
+      className="h-10 mr-2"
     />
-    <h1 className="text-lg font-semibold text-white">Voice Assistant</h1>
+  
   </div>
+
+  {/* Center title */}
+  <h1 className="text-white text-2xl font-bold">Voice Assistant</h1>
 </header>
+
+{/* <header className="bg-[#0071dc] py-4 px-4 shadow-md w-full relative flex justify-center items-center">
+  <span className="absolute left-4 font-bold text-white text-lg">Walmart</span>
+  <h1 className="text-white text-2xl font-bold">Voice Assistant</h1>
+</header> */}
 
 
       {/* Main Content */}
