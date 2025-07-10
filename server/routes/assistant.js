@@ -4,19 +4,19 @@ const axios = require("axios");
 const router = express.Router();
 require("dotenv").config();
 
-const Product = require("../models/Product"); // MongoDB model
+// const Product = require("../models/Product"); // MongoDB model
 
 router.post("/query", async (req, res) => {
   const userQuery = req.body.query?.toLowerCase();
 
   try {
     // 🧠 Fetch all products from MongoDB
-    const allProducts = await Product.find();
+    // const allProducts = await Product.find();
 
-    // 🧾 Format product info for Groq context
-    const inventoryList = allProducts.map(p =>
-      `- ${p.title} – ₹${p.price} – ${p.aisle}`
-    ).join("\n");
+    // // 🧾 Format product info for Groq context
+    // const inventoryList = allProducts.map(p =>
+    //   `- ${p.title} – ₹${p.price} – ${p.aisle}`
+    // ).join("\n");
 
     // 🔁 Send user query + dynamic inventory to Groq
     const groqRes = await axios.post(
