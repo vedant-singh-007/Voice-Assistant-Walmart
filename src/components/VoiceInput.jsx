@@ -8,9 +8,13 @@ function VoiceInput({ onQuery }) {
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
 
   const handleStart = () => {
-    resetTranscript();
-    SpeechRecognition.startListening({ continuous: false });
-  };
+  resetTranscript();
+  SpeechRecognition.startListening({
+    continuous: true,
+    interimResults: true
+  });
+};
+
 
   const handleStop = () => {
     SpeechRecognition.stopListening();
@@ -101,13 +105,7 @@ function VoiceInput({ onQuery }) {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-100 border-t border-gray-200 py-6 px-4 w-full">
-        <div className="max-w-6xl mx-auto text-center text-gray-600 text-sm">
-          <p>© 2025 Walmart. All rights reserved.</p>
-        </div>
-      </footer>
+      
     </div>
   );
 }

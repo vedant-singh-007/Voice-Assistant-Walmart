@@ -1,6 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const ResponseDisplay = ({ response }) => {
+  // 🔊 Speak the assistant response aloud
+  const speakResponse = (text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.5; // 👈 Adjust this value (1.0 is normal speed)
+    utterance.pitch = 1;  // You can adjust this too if needed
+    utterance.lang = "en-US";
+    speechSynthesis.cancel(); // Stop any previous speech
+    speechSynthesis.speak(utterance);
+  };
+
+  // 🔁 Speak every time response updates
+  useEffect(() => {
+    if (response) {
+      speakResponse(response);
+    }
+  }, [response]);
+
   if (!response) return null;
 
   return (
@@ -38,27 +55,3 @@ const ResponseDisplay = ({ response }) => {
 };
 
 export default ResponseDisplay;
-
-
-// // 📁 client/components/ResponseDisplay.jsx
-
-// import React from "react";
-
-// const ResponseDisplay = ({ response }) => {
-//   if (!response) return null;
-
-//   return (
-//     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 px-4 py-8">
-//       <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-4xl overflow-y-auto max-h-[90vh]">
-//         <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-//           🛒 Assistant Response
-//         </h2>
-//         <p className="text-gray-700 text-lg leading-relaxed whitespace-pre-line">
-//           {response}
-//         </p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ResponseDisplay;
