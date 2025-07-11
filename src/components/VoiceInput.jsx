@@ -38,10 +38,11 @@ function VoiceInput({ onQuery }) {
     console.log("▶️ Starting speech recognition...");
     resetTranscript();
     SpeechRecognition.startListening({
-      continuous: true,
-      interimResults: true,
-      language: "en-US",
-    });
+  continuous: false,
+  interimResults: false,
+  language: "en-US",
+});
+
   };
 
   const handleStop = () => {
