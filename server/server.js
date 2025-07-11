@@ -11,7 +11,7 @@ require('dotenv').config();
 //   .catch((err) => console.error("❌ MongoDB connection error:", err.message));
 
 
-app.use(cors());
+app.use(cors({ origin: "*" })); 
 app.use(express.json());
 
 const assistantRoute = require('./routes/assistant');
