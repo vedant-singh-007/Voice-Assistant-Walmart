@@ -1,7 +1,15 @@
+
+
+if (typeof window !== "undefined") {
+  window.SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+}
+
 import React from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+
 import logo from "../assets/walmart-logo.png";
 
 function VoiceInput({ onQuery }) {
