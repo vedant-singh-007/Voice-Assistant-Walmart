@@ -5,18 +5,39 @@ import SpeechRecognition, {
 import logo from "../assets/walmart-logo.png";
 
 function VoiceInput({ onQuery }) {
-  const { transcript, listening, resetTranscript } = useSpeechRecognition();
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
+  console.log("🧪 Browser supports SR:", browserSupportsSpeechRecognition);
+  console.log("🎤 Listening:", listening);
+  console.log("📄 Transcript:", transcript);
+
+  if (!browserSupportsSpeechRecognition) {
+    return (
+      <div className="text-red-600 text-center p-4">
+        ❌ Your browser does not support Speech Recognition.
+        <br />
+        Please use Google Chrome on Desktop.
+      </div>
+    );
+  }
 
   const handleStart = () => {
-  resetTranscript();
-  SpeechRecognition.startListening({
-    continuous: true,
-    interimResults: true
-  });
-};
-
+    console.log("▶️ Starting speech recognition...");
+    resetTranscript();
+    SpeechRecognition.startListening({
+      continuous: true,
+      interimResults: true,
+      language: "en-US",
+    });
+  };
 
   const handleStop = () => {
+    console.log("⏹️ Stopping... Transcript was:", transcript);
     SpeechRecognition.stopListening();
     onQuery(transcript);
   };
@@ -24,26 +45,12 @@ function VoiceInput({ onQuery }) {
   return (
     <div className="flex flex-col w-full h-full bg-white">
       {/* Header */}
- <header className="bg-[#0071dc] py-4 px-4 shadow-md w-full relative flex justify-center items-center">
-  {/* Walmart logo on the left */}
-  <div className="absolute left-4 flex items-center">
-    <img
-      src={logo}
-      alt="Walmart Logo"
-      className="h-10 mr-2"
-    />
-  
-  </div>
-
-  {/* Center title */}
-  <h1 className="text-white text-2xl font-bold">Voice Assistant</h1>
-</header>
-
-{/* <header className="bg-[#0071dc] py-4 px-4 shadow-md w-full relative flex justify-center items-center">
-  <span className="absolute left-4 font-bold text-white text-lg">Walmart</span>
-  <h1 className="text-white text-2xl font-bold">Voice Assistant</h1>
-</header> */}
-
+      <header className="bg-[#0071dc] py-4 px-4 shadow-md w-full relative flex justify-center items-center">
+        <div className="absolute left-4 flex items-center">
+          <img src={logo} alt="Walmart Logo" className="h-10 mr-2" />
+        </div>
+        <h1 className="text-white text-2xl font-bold">Voice Assistant</h1>
+      </header>
 
       {/* Main Content */}
       <main className="flex-grow flex items-center justify-center w-full bg-white px-4">
@@ -57,11 +64,17 @@ function VoiceInput({ onQuery }) {
               <button
                 onClick={handleStart}
                 className={`flex items-center justify-center px-8 py-3 rounded-full text-white font-semibold text-base focus:outline-none transition ${
-                  listening ? "bg-gray-400" : "bg-[#0071dc] hover:bg-blue-700"
+                  listening
+                    ? "bg-gray-400"
+                    : "bg-[#0071dc] hover:bg-blue-700"
                 }`}
                 disabled={listening}
               >
-                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg
+                  className="w-5 h-5 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
                   <path
                     fillRule="evenodd"
                     d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"
@@ -80,7 +93,11 @@ function VoiceInput({ onQuery }) {
                 }`}
                 disabled={!listening}
               >
-                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg
+                  className="w-5 h-5 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
                   <path
                     fillRule="evenodd"
                     d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z"
@@ -114,7 +131,6 @@ function VoiceInput({ onQuery }) {
           </div>
         </div>
       </main>
-      
     </div>
   );
 }
