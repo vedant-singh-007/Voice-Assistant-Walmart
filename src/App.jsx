@@ -7,7 +7,7 @@ function App() {
 
   const handleQuery = async (query) => {
     try {
-      const res = await fetch("https://voice-assistant-walmart-1.onrender.com/api/query", {
+      const res = await fetch("https://voice-assistant-walmart.onrender.com/api/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query }),

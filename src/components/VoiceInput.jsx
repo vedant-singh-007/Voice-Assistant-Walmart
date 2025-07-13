@@ -1,11 +1,4 @@
-
-
-if (typeof window !== "undefined") {
-  window.SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-}
-
-import React from "react";
+import React, { useEffect } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -13,6 +6,17 @@ import SpeechRecognition, {
 import logo from "../assets/walmart-logo.png";
 
 function VoiceInput({ onQuery }) {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Assign speech recognition properly after mount
+      window.SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      console.log("🌐 User Agent:", navigator.userAgent);
+      console.log("🎙 SpeechRecognition object:", window.SpeechRecognition);
+    }
+  }, []);
+
   const {
     transcript,
     listening,
@@ -20,7 +24,7 @@ function VoiceInput({ onQuery }) {
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
-  console.log("🧪 Browser supports SR:", browserSupportsSpeechRecognition);
+  console.log("🧪 React Hook: Browser supports SR:", browserSupportsSpeechRecognition);
   console.log("🎤 Listening:", listening);
   console.log("📄 Transcript:", transcript);
 
@@ -29,7 +33,7 @@ function VoiceInput({ onQuery }) {
       <div className="text-red-600 text-center p-4">
         ❌ Your browser does not support Speech Recognition.
         <br />
-        Please use Google Chrome on Desktop.
+        Please use <strong>Google Chrome on Desktop</strong>.
       </div>
     );
   }
@@ -38,11 +42,10 @@ function VoiceInput({ onQuery }) {
     console.log("▶️ Starting speech recognition...");
     resetTranscript();
     SpeechRecognition.startListening({
-  continuous: false,
-  interimResults: false,
-  language: "en-US",
-});
-
+      continuous: false,
+      interimResults: false,
+      language: "en-US",
+    });
   };
 
   const handleStop = () => {
@@ -79,11 +82,7 @@ function VoiceInput({ onQuery }) {
                 }`}
                 disabled={listening}
               >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path
                     fillRule="evenodd"
                     d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"
@@ -102,11 +101,7 @@ function VoiceInput({ onQuery }) {
                 }`}
                 disabled={!listening}
               >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path
                     fillRule="evenodd"
                     d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z"
